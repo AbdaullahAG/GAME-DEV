@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Designer & Level Designer | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* ألوان طوكيو نايت المحسنة لثيم الـ Pixel */
+            --bg-color: #0f111a;       
+            --card-bg: #1f2335;        
+            --pixel-soft-green: #73daca; 
+            --pixel-soft-blue: #7aa2f7;  
+            --pixel-muted-pink: #f7768e; 
+            --pixel-orange: #ff9e64;
+            --text-color: #c0caf5;     
+            --text-muted: #565f89;     
+            --border-color: #414868;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* مؤشر ماوس بيكسل مخصص واحترافي */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M0,0 L0,22 L6,16 L12,26 L16,24 L10,14 L18,14 Z" fill="%2373daca" stroke="%230f111a" stroke-width="2" stroke-linejoin="miter"/></svg>'), auto;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* --- تأثير الخلفية المتحركة (3D Retro Grid & Starfield) --- */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 50%, #1a1b26 0%, #0f111a 100%);
+            overflow: hidden;
+        }
+
+        .bg-grid-animation {
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(122, 162, 247, 0.15) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(122, 162, 247, 0.15) 2px, transparent 2px);
+            background-size: 50px 50px;
+            background-position: center bottom;
+            transform: perspective(300px) rotateX(65deg);
+            transform-origin: center bottom;
+            animation: gridMove 12s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { background-position: 0 0; }
+            to { background-position: 0 100%; }
+        }
+
+        /* قناع علوي متدرج لدمج الأرضية الأفقية مع الفضاء */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bg-color) 20%, rgba(15, 17, 26, 0.5) 70%, transparent 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* كانفاس مخصص للنجوم وجزيئات الماوس بدقة البيكسل */
+        #pixel-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* --- الهيدر والقوائم --- */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px dashed var(--border-color);
+            background: rgba(15, 17, 26, 0.9);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--pixel-soft-green);
+            text-shadow: 3px 3px 0px #000;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; text-shadow: 2px 2px 0px #000; }
+            to { opacity: 1; text-shadow: 3px 3px 10px var(--pixel-soft-green); }
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 18px;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 5px 10px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--pixel-soft-blue);
+            background: rgba(122, 162, 247, 0.1);
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: var(--pixel-muted-pink);
+            transition: width 0.2s steps(4);
+        }
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            max-width: 900px;
+            margin: 80px auto;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-shadow: 4px 4px 0px var(--bg-color), 7px 7px 0px var(--border-color);
+        }
+
+        .hero h1 span {
+            color: var(--pixel-orange);
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        /* --- أزرار البيكسل الاحترافية (Pixel Borders) --- */
+        .btn-pixel {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            display: inline-block;
+            background: var(--pixel-soft-green);
+            color: var(--bg-color);
+            padding: 16px 28px;
+            text-decoration: none;
+            position: relative;
+            /* عمل حواف بيكسل حقيقية ومربّعة */
+            border: 4px solid #000;
+            box-shadow: 
+                inset -4px -4px 0px 0px rgba(0,0,0,0.2),
+                4px 4px 0px 0px var(--border-color);
+            image-rendering: pixelated;
+            transition: all 0.1s ease;
+        }
+
+        .btn-pixel:hover {
+            box-shadow: 
+                inset -4px -4px 0px 0px rgba(0,0,0,0.4),
+                2px 2px 0px 0px var(--border-color);
+            transform: translate(2px, 2px);
+            background: var(--pixel-soft-blue);
+        }
+
+        .btn-pixel:active {
+            box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.4);
+            transform: translate(4px, 4px);
+        }
+
+        /* --- الحاوية والمشاريع --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--pixel-soft-blue);
+            margin: 80px 0 40px 0;
+            display: flex;
+            align-items: center;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .section-title::before {
+            content: "► ";
+            color: var(--pixel-muted-pink);
+            margin-right: 12px;
+            animation: blink 0.8s steps(2) infinite;
+        }
+
+        @keyframes blink {
+            to { opacity: 0; }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        /* تصميم كروت الـ 8-Bit المحسنة */
+        .card {
+            background-color: rgba(31, 35, 53, 0.85);
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px 0px var(--border-color);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(4px);
+            transition: transform 0.2s steps(4), box-shadow 0.2s steps(4);
+        }
+
+        .card:hover {
+            box-shadow: 10px 10px 0px 0px var(--pixel-soft-green);
+            transform: translate(-4px, -4px);
+        }
+
+        .media-box {
+            background: #161925;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px dashed var(--border-color);
+            color: var(--pixel-soft-blue);
+            position: relative;
+        }
+        
+        .media-box::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        .status-dot {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            background-color: var(--pixel-soft-green);
+            color: var(--bg-color);
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px #000;
+        }
+        .status-dot::before { content: "LIVE"; }
+        
+        .status-dot.wip {
+            background-color: var(--pixel-muted-pink);
+        }
+        .status-dot.wip::before { content: "WIP"; }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        .card-desc {
+            font-size: 1.1rem;
+            color: #a9b1d6;
+            margin-bottom: 20px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: #1a1b26;
+            border: 2px solid var(--pixel-soft-blue);
+            color: var(--pixel-soft-blue);
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* لوحات الخبرة (Panel Badges) */
+        .panel-badge {
+            background: rgba(31, 35, 53, 0.9);
+            border: 4px solid #000;
+            border-left: 10px solid var(--pixel-muted-pink);
+            box-shadow: 6px 6px 0px #000;
+            padding: 30px;
+            margin-bottom: 35px;
+            transition: transform 0.2s steps(3);
+        }
+        
+        .panel-badge:hover {
+            transform: translateX(4px);
+        }
+
+        .panel-badge h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 13px;
+            color: var(--pixel-muted-pink);
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: var(--text-muted);
+            border-top: 4px dashed var(--border-color);
+            background: #0b0c14;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-container">
+        <div class="bg-grid-animation"></div>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <canvas id="pixel-canvas"></canvas>
+
+    <header>
+        <div class="logo">PLAYER_1 // PORTFOLIO</div>
+        <nav>
+            <a href="#levels">LEVELS</a>
+            <a href="#uiux">UI/UX</a>
+            <a href="#skills">EXP / SKILLS</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>DESIGNING THE <span>FUN</span>.<br>BUILDING THE EXPERIENCE.</h1>
+        <p>Unreal Engine Game & Level Designer specializing in blockouts, spatial pacing, and player UI/UX journeys.</p>
+        <a href="#levels" class="btn-pixel">START MISSION</a>
+    </section>
+
+    <main class="container">
+
+        <h2 id="levels" class="section-title">LEVEL DESIGN MISSIONS</h2>
+        <div class="grid">
+            
+            <div class="card">
+                <div class="status-dot wip"></div>
+                <div class="media-box">
+                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-orange)">[ INSERT DEVLOG VIDEO ]</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Solo Indie Project</h3>
+                    <p class="card-desc">Currently grayboxing and designing mechanics for an unannounced personal title. Focusing on spatial navigation and combat arenas layout inside Unreal Engine.</p>
+                    <div class="tags">
+                        <span class="tag">UE5</span>
+                        <span class="tag">Grayboxing</span>
+                        <span class="tag">Pacing</span>
+                    </div>
+                    <a href="#" class="btn-pixel" style="padding: 8px 12px; font-size:9px;">VIEW BREAKDOWN</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="status-dot"></div>
+                <div class="media-box">
+                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-soft-green)">[ INSERT 2D LAYOUT / GIF ]</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Unreleased Team Project</h3>
+                    <p class="card-desc">Architected multi-route levels from concept blockout to final asset placement. Maintained player flow and telemetry guidelines tailored to the team's mechanics.</p>
+                    <div class="tags">
+                        <span class="tag">Level Layout</span>
+                        <span class="tag">Set Dressing</span>
+                        <span class="tag">Team Project</span>
+                    </div>
+                    <a href="#" class="btn-pixel" style="padding: 8px 12px; font-size:9px;">VIEW CASE STUDY</a>
+                </div>
+            </div>
+
+        </div>
+
+        <h2 id="uiux" class="section-title">UI / UX ARCHITECTURE</h2>
+        <div class="grid">
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="media-box" style="height: 160px;">
+                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-soft-blue)">[ INSERT WIDGET BLUEPRINTS & HUD GAMEPLAY ]</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Core Gameplay HUD & Interactive Menu Systems</h3>
+                    <p class="card-desc">Designed and wired an entire game UI/UX system. Bound layout behaviors and states using Unreal Engine's Widget Blueprints, emphasizing clarity, visual game-state feedback, and absolute responsive design for various player viewports.</p>
+                    <div class="tags">
+                        <span class="tag">UMG Widgets</span>
+                        <span class="tag">UI Logic</span>
+                        <span class="tag">UX Testing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="skills" class="section-title">EXP & BONUS ABILITIES</h2>
+        
+        <div class="panel-badge">
+            <h3>🛡️ CYBERSECURITY & NETWORKING BACKGROUND</h3>
+            <p style="font-size: 1.15rem;">Leveraging an academic background in networks and security to construct replication-friendly multiplayer layouts and secure Blueprint architecture logic (Client vs Server authority checks).</p>
+        </div>
+
+        <div class="panel-badge" style="border-left-color: var(--pixel-soft-blue);">
+            <h3 style="color: var(--pixel-soft-blue);">👨‍🏫 UNREAL ENGINE WORKSHOP INSTRUCTOR</h3>
+            <p style="font-size: 1.15rem;">Designed curriculum and taught essential engine concepts to university tech club members. Course certification is formally accredited by the Ministry of Higher Education.</p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>GAME OVER? NO, JUST STARTING. © 2026</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('pixel-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // ضبط أحجام الكانفاس لتغطية الشاشة بالكامل
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let mouseParticles = [];
+        let starfield = [];
+
+        // إنشاء نظام نجوم البيكسل في الخلفية لتعطي عمق الفضاء المتلألئ
+        const maxStars = 60;
+        for (let i = 0; i < maxStars; i++) {
+            starfield.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() > 0.7 ? 4 : 2, // أحجام بيكسل مربعة 2x2 أو 4x4
+                speed: Math.random() * 0.3 + 0.1,
+                alpha: Math.random(),
+                dir: Math.random() > 0.5 ? 1 : -1
+            });
+        }
+
+        // كلاس جزيئات الماوس (Pixel Trail)
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.floor(Math.random() * 4) + 4; // أحجام بيكسل واضحة ومربّعة
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2 - 1; // ترتفع قليلاً لأعلى بفعل الجاذبية المعكوسة
+                this.color = Math.random() > 0.5 ? '#73daca' : '#7aa2f7'; 
+                this.alpha = 1.0;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= 0.02; // تتلاشى تدريجياً
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                // رسم الجزيء كمربع بيكسل حاد الحواف بدون تنعيم
+                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        // رصد حركة الماوس لإنتاج التأثير
+        window.addEventListener('mousemove', function(event) {
+            if(mouseParticles.length < 40) { 
+                mouseParticles.push(new Particle(event.clientX, event.clientY));
+            }
+        });
+
+        // حلقة الانيميشن الرئيسية للخلفية والجزيئات
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 1. رسم وتحديث نجوم البيكسل (Starfield)
+            for (let i = 0; i < starfield.length; i++) {
+                let s = starfield[i];
+                s.alpha += 0.01 * s.dir;
+                if (s.alpha >= 1 || s.alpha <= 0.1) s.dir *= -1; // تأثير التلألأ
+                
+                // تحريك النجوم ببطء لأسفل لمحاكاة الحركة في الفضاء
+                s.y += s.speed;
+                if (s.y > canvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+                
+                ctx.fillStyle = `rgba(122, 162, 247, ${s.alpha})`;
+                ctx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
+            }
+
+            // 2. تحديث ورسم ذيل الماوس (Pixel Particle Trail)
+            for (let i = 0; i < mouseParticles.length; i++) {
+                mouseParticles[i].update();
+                mouseParticles[i].draw();
+                
+                if (mouseParticles[i].alpha <= 0) {
+                    mouseParticles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>
