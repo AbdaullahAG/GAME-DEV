@@ -291,6 +291,7 @@
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             background-size: 100% 4px, 6px 100%;
             pointer-events: none;
+            z-index: 5;
         }
 
         .status-dot {
@@ -304,6 +305,7 @@
             color: var(--bg-color);
             border: 2px solid #000;
             box-shadow: 2px 2px 0px #000;
+            z-index: 15;
         }
         .status-dot::before { content: "LIVE"; }
         
@@ -379,6 +381,66 @@
             background: #0b0c14;
             margin-top: 100px;
         }
+
+        /* --- تنسيقات معرض الصور الجديد ليتسع لأي عدد من الصور --- */
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 200px;
+        }
+
+        .slider-container .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            image-rendering: pixelated; 
+        }
+
+        .slider-container .slide.active {
+            opacity: 1;
+            position: relative;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 17, 26, 0.85);
+            color: var(--pixel-soft-green);
+            border: 2px solid var(--border-color);
+            padding: 6px 10px;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.1s ease;
+        }
+        .slider-btn:hover {
+            background: var(--pixel-soft-blue);
+            color: var(--bg-color);
+        }
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
+
+        .slider-counter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 17, 26, 0.85);
+            color: var(--pixel-orange);
+            border: 2px solid var(--border-color);
+            padding: 3px 8px;
+            font-size: 9px;
+            font-family: 'Press Start 2P', cursive;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -391,7 +453,7 @@
     <canvas id="pixel-canvas"></canvas>
 
     <header>
-        <div class="logo">PLAYER_1 // PORTFOLIO</div>
+        <div class="logo">PLAYER_1 // AbdallahAG</div>
         <nav>
             <a href="#levels">LEVELS</a>
             <a href="#uiux">UI/UX</a>
@@ -407,17 +469,28 @@
 
     <main class="container">
 
-        <h2 id="levels" class="section-title">LEVEL DESIGN MISSIONS</h2>
+        <h2 id="levels" class="section-title">Solo Indie Project</h2>
         <div class="grid">
             
             <div class="card">
                 <div class="status-dot wip"></div>
-                <div class="media-box">
-                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-orange)">[ INSERT DEVLOG VIDEO ]</span>
+                
+                <div class="media-box slider-container" id="project1-slider">
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-06-03%20222615.png" class="slide active" alt="Screenshot 1">
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-06-03%20222540.png" class="slide" alt="Screenshot 2">
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-06-03%20222513.png" class="slide" alt="Screenshot 3">
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-06-03%20222443.png" class="slide" alt="Screenshot 4">
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-06-03%20222354.png" class="slide" alt="Screenshot 5">
+                    
+                    <div class="slider-counter">1 / 6</div>
+
+                    <button class="slider-btn prev" onclick="changeSlide('project1-slider', -1)">&#9664;</button>
+                    <button class="slider-btn next" onclick="changeSlide('project1-slider', 1)">&#9654;</button>
                 </div>
+
                 <div class="card-body">
                     <h3 class="card-title">Solo Indie Project</h3>
-                    <p class="card-desc">Currently grayboxing and designing mechanics for an unannounced personal title. Focusing on spatial navigation and combat arenas layout inside Unreal Engine.</p>
+                    <p class="card-desc">Currently grayboxing and designing mechanics for an unannounced personal title. Focusing on spatial navigation and layout inside Unreal Engine .</p>
                     <div class="tags">
                         <span class="tag">UE5</span>
                         <span class="tag">Grayboxing</span>
@@ -430,11 +503,11 @@
             <div class="card">
                 <div class="status-dot"></div>
                 <div class="media-box">
-                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-soft-green)">[ INSERT 2D LAYOUT / GIF ]</span>
+                    <img src="https://github.com/AbdaullahAG/GAME-DEV/blob/main/IMG/DAFEEN/Screenshot%202026-02-01%20202331.png" style="width:100%; height:100%; object-fit:cover; image-rendering: pixelated;">
                 </div>
                 <div class="card-body">
                     <h3 class="card-title">Unreleased Team Project</h3>
-                    <p class="card-desc">Architected multi-route levels from concept blockout to final asset placement. Maintained player flow and telemetry guidelines tailored to the team's mechanics.</p>
+                    <p class="card-desc">I worked with my team at Shafaq on designing a game, as well as building the levels, characters, and UI. The game is currently in development, and more details will be provided closer to its release date. .</p>
                     <div class="tags">
                         <span class="tag">Level Layout</span>
                         <span class="tag">Set Dressing</span>
@@ -449,8 +522,8 @@
         <h2 id="uiux" class="section-title">UI / UX ARCHITECTURE</h2>
         <div class="grid">
             <div class="card" style="grid-column: 1 / -1;">
-                <div class="media-box" style="height: 160px;">
-                    <span style="font-family:'Press Start 2P'; font-size:10px; color:var(--pixel-soft-blue)">[ INSERT WIDGET BLUEPRINTS & HUD GAMEPLAY ]</span>
+                <div class="media-box" style="height: 200px;">
+                    <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1000&q=80" alt="UI Architecture" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div class="card-body">
                     <h3 class="card-title">Core Gameplay HUD & Interactive Menu Systems</h3>
@@ -466,14 +539,30 @@
 
         <h2 id="skills" class="section-title">EXP & BONUS ABILITIES</h2>
         
-        <div class="panel-badge">
-            <h3>🛡️ CYBERSECURITY & NETWORKING BACKGROUND</h3>
-            <p style="font-size: 1.15rem;">Leveraging an academic background in networks and security to construct replication-friendly multiplayer layouts and secure Blueprint architecture logic (Client vs Server authority checks).</p>
+       <div class="panel-badge">
+            <h3>🎮 GAMEJAM 2025</h3>
+            <p style="font-size: 1.15rem; margin-bottom: 20px;">
+                I worked with my team to design a complete game in two days at the Jordan Game Lab in Zarqa. The central theme was masks, so my task was to design the mask using open-source AI tools, as well as to design the game levels and the UI.
+            </p>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="https://globalgamejam.org/games/2026/masked-man-hotel-7" target="_blank" class="btn-pixel" style="padding: 6px 12px; font-size: 10px; background: var(--pixel-orange);">
+                    PLAY GAME
+                </a>
+             
+            </div>
         </div>
 
         <div class="panel-badge" style="border-left-color: var(--pixel-soft-blue);">
             <h3 style="color: var(--pixel-soft-blue);">👨‍🏫 UNREAL ENGINE WORKSHOP INSTRUCTOR</h3>
-            <p style="font-size: 1.15rem;">Designed curriculum and taught essential engine concepts to university tech club members. Course certification is formally accredited by the Ministry of Higher Education.</p>
+            <p style="font-size: 1.15rem; margin-bottom: 20px;">
+               Designed the curriculum and delivered a comprehensive, hands-on Game Development training course using Unreal Engine for 25 students at The World Islamic Sciences & Education University (WISE), in cooperation with IEEE WISE. The intensive program yielded exceptional results, with several students successfully developing and completing their own game projects within just two days. Furthermore, the course achieved an outstanding instructor satisfaction rating of 4.75/5.00 based on the final student evaluations.            </p>
+            
+            <div>
+                <a href="https://www.linkedin.com/posts/abdallahabughallous_unrealengine-gamedev-aesaefaewaeyaezabraepaesaelaesaehaepaeq-ugcPost-7460367144292282368-AmR-/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFBnOPsBPmEVDQ0OXsUdqDYV0HfFPQ__mT0" target="_blank" class="btn-pixel" style="padding: 6px 12px; font-size: 10px; background: var(--pixel-soft-blue); color: var(--bg-color);">
+                    VIEW CREDENTIALS
+                </a>
+            </div>
         </div>
 
     </main>
@@ -483,10 +572,10 @@
     </footer>
 
     <script>
+        // --- كود جزيئات الخلفية وحركة النجوم والماوس الأساسي ---
         const canvas = document.getElementById('pixel-canvas');
         const ctx = canvas.getContext('2d');
 
-        // ضبط أحجام الكانفاس لتغطية الشاشة بالكامل
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -497,63 +586,56 @@
         let mouseParticles = [];
         let starfield = [];
 
-        // إنشاء نظام نجوم البيكسل في الخلفية لتعطي عمق الفضاء المتلألئ
         const maxStars = 60;
         for (let i = 0; i < maxStars; i++) {
             starfield.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                size: Math.random() > 0.7 ? 4 : 2, // أحجام بيكسل مربعة 2x2 أو 4x4
+                size: Math.random() > 0.7 ? 4 : 2, 
                 speed: Math.random() * 0.3 + 0.1,
                 alpha: Math.random(),
                 dir: Math.random() > 0.5 ? 1 : -1
             });
         }
 
-        // كلاس جزيئات الماوس (Pixel Trail)
         class Particle {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.size = Math.floor(Math.random() * 4) + 4; // أحجام بيكسل واضحة ومربّعة
+                this.size = Math.floor(Math.random() * 4) + 4; 
                 this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2 - 1; // ترتفع قليلاً لأعلى بفعل الجاذبية المعكوسة
+                this.speedY = (Math.random() - 0.5) * 2 - 1; 
                 this.color = Math.random() > 0.5 ? '#73daca' : '#7aa2f7'; 
                 this.alpha = 1.0;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                this.alpha -= 0.02; // تتلاشى تدريجياً
+                this.alpha -= 0.02; 
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
                 ctx.fillStyle = this.color;
-                // رسم الجزيء كمربع بيكسل حاد الحواف بدون تنعيم
                 ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
                 ctx.restore();
             }
         }
 
-        // رصد حركة الماوس لإنتاج التأثير
         window.addEventListener('mousemove', function(event) {
             if(mouseParticles.length < 40) { 
                 mouseParticles.push(new Particle(event.clientX, event.clientY));
             }
         });
 
-        // حلقة الانيميشن الرئيسية للخلفية والجزيئات
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 1. رسم وتحديث نجوم البيكسل (Starfield)
             for (let i = 0; i < starfield.length; i++) {
                 let s = starfield[i];
                 s.alpha += 0.01 * s.dir;
-                if (s.alpha >= 1 || s.alpha <= 0.1) s.dir *= -1; // تأثير التلألأ
+                if (s.alpha >= 1 || s.alpha <= 0.1) s.dir *= -1; 
                 
-                // تحريك النجوم ببطء لأسفل لمحاكاة الحركة في الفضاء
                 s.y += s.speed;
                 if (s.y > canvas.height) {
                     s.y = 0;
@@ -564,7 +646,6 @@
                 ctx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
             }
 
-            // 2. تحديث ورسم ذيل الماوس (Pixel Particle Trail)
             for (let i = 0; i < mouseParticles.length; i++) {
                 mouseParticles[i].update();
                 mouseParticles[i].draw();
@@ -578,6 +659,48 @@
         }
         
         animate();
+
+        // --- كود تشغيل معرض الصور المطور للتحكم بعدد مفتوح من الصور وتحديث العداد تلقائياً ---
+        document.addEventListener("DOMContentLoaded", function() {
+            // تحديث قيم العدادات عند بداية التشغيل لتعمل بشكل ديناميكي
+            const sliders = document.querySelectorAll('.slider-container');
+            sliders.forEach(slider => {
+                const counter = slider.querySelector('.slider-counter');
+                const slides = slider.getElementsByClassName('slide');
+                if(counter && slides.length > 0) {
+                    counter.innerText = `1 / ${slides.length}`;
+                }
+            });
+        });
+
+        function changeSlide(sliderId, direction) {
+            const slider = document.getElementById(sliderId);
+            const slides = slider.getElementsByClassName('slide');
+            const counter = slider.querySelector('.slider-counter');
+            let activeIndex = 0;
+
+            // تحديد الصورة المفعلة حالياً ومسح الكلاس منها
+            for (let i = 0; i < slides.length; i++) {
+                if (slides[i].classList.contains('active')) {
+                    activeIndex = i;
+                    slides[i].classList.remove('active');
+                    break;
+                }
+            }
+
+            // حساب الاندكس الجديد للصور مع دعم الدوران اللانهائي
+            let nextIndex = activeIndex + direction;
+            if (nextIndex >= slides.length) nextIndex = 0;
+            if (nextIndex < 0) nextIndex = slides.length - 1;
+
+            // تفعيل الصورة الجديدة
+            slides[nextIndex].classList.add('active');
+            
+            // تحديث نص العداد الديناميكي ليتناسب مع العدد الحالي
+            if (counter) {
+                counter.innerText = `${nextIndex + 1} / ${slides.length}`;
+            }
+        }
     </script>
 </body>
 </html>
