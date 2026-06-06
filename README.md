@@ -1,6 +1,5 @@
 # 🎮 Game & Level Designer Portfolio
 
-![License](https://img.shields.io/badge/License-MIT-blueviolet.svg?style=for-the-badge)
 ![Engine](https://img.shields.io/badge/Unreal_Engine_5-0E111A?style=for-the-badge&logo=unrealengine&logoColor=white)
 ![Style](https://img.shields.io/badge/Theme-8--Bit%20%2F%20Retro-73daca?style=for-the-badge)
 
