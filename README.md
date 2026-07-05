@@ -24,6 +24,8 @@ Experience the full interactive portfolio live here:
 * **Pixel Starfield Canvas:** A lightweight HTML5 Canvas system generating twinkling and floating background stars.
 * **Interactive Particle Trail:** Custom JS logic capturing cursor movement to emit dynamic pixel dust that fades naturally.
 
+* 
+
 ### 📐 UI/UX & Layout
 * **Authentic 8-Bit Borders:** Custom solid block borders with stepping shadows mimicking old-school UI design.
 * **Tokyo Night Color Palette:** Enhanced eye-friendly dark colors combined with high-contrast accent tones for maximum scannability.
